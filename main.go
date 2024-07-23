@@ -1,7 +1,7 @@
 package main
 
 import (
-	"fmt"
+	"strings"
 
 	"github.com/nopeEOF/translator/pkg/client"
 	"github.com/nopeEOF/translator/pkg/command"
@@ -10,20 +10,25 @@ import (
 )
 
 func main() {
-	config, err := config.NewConfig("config.json")
-	if err != nil {
-		panic(err)
-	}
-	client := client.NewClient(30)
+	config := config.NewConfig()
+	client := client.NewClient(5)
 	selectedClipboard, err := command.Runner("xsel", "-o")
+	selectedClipboard = strings.Replace(selectedClipboard, "\n", " ", -1)
+
 	if err != nil {
-		panic(err)
+		command.Runner("kdialog", "--msgbox", err.Error())
+		return
 	}
 	body, err := translate.Translate(selectedClipboard, config, client)
 	if err != nil {
-		panic(err)
+		command.Runner("kdialog", "--msgbox", "check internet connection")
+		return
 	}
-
-	body, _ = client.GetTranslateTextWithSplitBody(body)
-	fmt.Println(body)
+	body, err = client.GetTranslateTextWithSplitBody(body)
+	if err != nil {
+		command.Runner("kdialog", "--msgbox", err.Error())
+		return
+	}
+	body = client.KdialogMessageBody(body)
+	command.Runner("kdialog", "--msgbox", body)
 }

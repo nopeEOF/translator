@@ -5,6 +5,7 @@ import (
 	"encoding/json"
 	"io"
 	"net/http"
+	"html"
 	netUrl "net/url"
 )
 
@@ -46,7 +47,16 @@ func (r *Client) GetTranslateTextWithSplitBody(body string) (string, error) {
         return data, err
     }
 	if dict["data"].([]interface{})[0] != nil {
-		return dict["data"].([]interface{})[0].([]interface{})[0].([]interface{})[0].(string), nil
+		var value string
+		for _, d := range(dict["data"].([]interface{})[0].([]interface{})) {
+			value = value + d.([]interface{})[0].(string)
+		}
+		return value, nil
 	}
 	return "nil", nil
 } 
+
+func (c *Client) KdialogMessageBody(body string) string {
+	body =  html.EscapeString(body)
+	return fmt.Sprintf("<html><body dir='rtl'><p align=\"justify\">%s</p></body></html>", body)
+}

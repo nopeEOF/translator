@@ -1,21 +1,30 @@
 package config
 
 import (
-	"encoding/json"
-	"os"
+	"flag"
 )
 
 type Config struct {
-	Lang string `json:"lang"`
-	Url  string `json:"url"`
+	Lang string 
+	Url  string 
 }
 
-func getConfig(configPath string) (Config, error) {
-	var config Config
-	data, err := os.ReadFile(configPath)
-	if err != nil {
-		return config, err
+type Options struct {
+	Lang string
+}
+
+func options() Options {
+	opt := Options{}
+	flag.StringVar(&opt.Lang, "lang", "fa", "language for translate")
+	flag.Parse()
+	return opt
+}
+
+func getConfig() Config {
+	opt := options()
+	config := Config{
+		Url: "http://translate.googleapis.com/translate_a/single?client=gtx&sl=auto&tl=%s&dt=t&q=%s",
+		Lang: opt.Lang,
 	}
-	json.Unmarshal(data, &config)
-	return config, nil
+	return config
 }
