@@ -1,4 +1,8 @@
+## Essentials package
+```bash
+apt install xsel kdialog
+```
 ## Run:
 ```bash
-./translator -lang fa
+./translator_linux_amd64 -lang fa
 ```
