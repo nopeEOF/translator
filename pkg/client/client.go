@@ -13,11 +13,11 @@ type Client struct {
 	Client *http.Client
 }
 
-func (r *Client) UrlQueryEncode(text string) string {
+func (c *Client) UrlQueryEncode(text string) string {
 	return netUrl.QueryEscape(text)
 }
 
-func (r *Client) BodyToString(body io.ReadCloser) (string, error) {
+func (c *Client) BodyToString(body io.ReadCloser) (string, error) {
 	var bodyStr string
 	bodyByte, err := io.ReadAll(body)
 	if err != nil {
@@ -27,7 +27,7 @@ func (r *Client) BodyToString(body io.ReadCloser) (string, error) {
 	return string(bodyByte), nil
 }
 
-func (r *Client) NewGetRequest(url string, headers map[string]string) (*http.Request, error) {
+func (c *Client) NewGetRequest(url string, headers map[string]string) (*http.Request, error) {
 	request, err := http.NewRequest("GET", url, nil)
 	if err != nil {
 		return nil, err
@@ -39,7 +39,7 @@ func (r *Client) NewGetRequest(url string, headers map[string]string) (*http.Req
 	return request, nil
 }
 
-func (r *Client) GetTranslateTextWithSplitBody(body string) (string, error) {
+func (c *Client) GetTranslateTextWithSplitBody(body string) (string, error) {
 	data := fmt.Sprintf("{\"data\": %s}", body)
 	var dict map[string]interface{}
     err := json.Unmarshal([]byte(data), &dict)

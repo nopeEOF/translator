@@ -22,9 +22,9 @@ func Translate(text string, config config.Config, client client.Client) (string,
 		return translate, err
 	}
 	defer response.Body.Close()
-	body, err := client.BodyToString(response.Body)
+	translate, err = client.BodyToString(response.Body)
 	if err != nil {
 		return translate, err
 	}
-	return body, nil
+	return translate, nil
 }
