@@ -10,6 +10,18 @@ import (
 )
 
 func main() {
+	pids, err := command.GetPIDOnFile()
+    if err != nil {
+        command.Runner("kdialog", "--msgbox", err.Error())
+		return
+    }
+    command.KillPid(pids)
+	err = command.ClearLogFile()
+	if err != nil {
+		command.Runner("kdialog", "--msgbox", err.Error())
+		return
+	}
+
 	config := config.NewConfig()
 	client := client.NewClient(5)
 	selectedClipboard, err := command.Runner("xsel", "-o")
@@ -30,5 +42,6 @@ func main() {
 		return
 	}
 	body = client.KdialogMessageBody(body)
-	command.Runner("kdialog", "--msgbox", body)
+	pid, err := command.CmdStart("kdialog", "--msgbox", body)
+	command.SavePidInFile(pid)
 }
