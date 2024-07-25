@@ -9,17 +9,26 @@ import (
 	"github.com/nopeEOF/translator/pkg/translate"
 )
 
-func main() {
+func killPidAndClearLogFile() error {
+	// kill all kdialog window with process id saved in log file
 	pids, err := command.GetPIDOnFile()
     if err != nil {
-        command.Runner("kdialog", "--msgbox", err.Error())
-		return
+		return err
     }
     command.KillPid(pids)
+
+	// clear all pid in log file
 	err = command.ClearLogFile()
 	if err != nil {
+		return err
+	}
+	return nil
+}
+
+func main() {
+	err := killPidAndClearLogFile()
+	if err != nil {
 		command.Runner("kdialog", "--msgbox", err.Error())
-		return
 	}
 
 	config := config.NewConfig()
