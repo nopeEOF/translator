@@ -50,7 +50,11 @@ func main() {
 		command.Runner("kdialog", "--msgbox", err.Error())
 		return
 	}
-	body = client.KdialogMessageBody(body)
+	body = client.KdialogMessageBody(body, config)
 	pid, err := command.CmdStart("kdialog", "--msgbox", body)
+	if err != nil {
+		command.Runner("kdialog", "--msgbox", err.Error())
+		return
+	}
 	command.SavePidInFile(pid)
 }

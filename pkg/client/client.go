@@ -1,12 +1,14 @@
 package client
 
 import (
-	"fmt"
 	"encoding/json"
+	"fmt"
+	"html"
 	"io"
 	"net/http"
-	"html"
 	netUrl "net/url"
+
+	"github.com/nopeEOF/translator/pkg/config"
 )
 
 type Client struct {
@@ -42,21 +44,21 @@ func (c *Client) NewGetRequest(url string, headers map[string]string) (*http.Req
 func (c *Client) GetTranslateTextWithSplitBody(body string) (string, error) {
 	data := fmt.Sprintf("{\"data\": %s}", body)
 	var dict map[string]interface{}
-    err := json.Unmarshal([]byte(data), &dict)
-    if err != nil {
-        return data, err
-    }
+	err := json.Unmarshal([]byte(data), &dict)
+	if err != nil {
+		return data, err
+	}
 	if dict["data"].([]interface{})[0] != nil {
 		var value string
-		for _, d := range(dict["data"].([]interface{})[0].([]interface{})) {
+		for _, d := range dict["data"].([]interface{})[0].([]interface{}) {
 			value = value + d.([]interface{})[0].(string)
 		}
 		return value, nil
 	}
 	return "nil", nil
-} 
+}
 
-func (c *Client) KdialogMessageBody(body string) string {
-	body =  html.EscapeString(body)
-	return fmt.Sprintf("<html><font size='4'><body dir='rtl'><p align=\"justify\">%s</p></body></font></html>", body)
+func (c *Client) KdialogMessageBody(body string, config config.Config) string {
+	body = html.EscapeString(body)
+	return fmt.Sprintf("<html><font size='4'><body dir='%s'><p align=\"justify\">%s</p></body></font></html>", config.Direction, body)
 }
