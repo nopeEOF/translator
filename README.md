@@ -1,4 +1,6 @@
 ### Using this tool, the selected text is translated into the desired language using the xsel tool and displayed using kdialog.
+> only available on Linux
+
 ## Essentials package
 ```bash
 apt install xsel kdialog
