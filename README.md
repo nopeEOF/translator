@@ -11,7 +11,7 @@ OR
 ```bash
 ./translator_linux_amd64 -lang fa -dir rtl
 ```
-note: Use it as a shortcut for easier use
+>  Use it as a shortcut for easier use
 
 ## Options
 ### -dir
@@ -28,7 +28,8 @@ The lang attribute specifies the language of the element's content.
 
 Common examples are "en" for English, "es" for Spanish, "fr" for French and so on.
 ```
-
+## Screenshot
+![alt text](https://github.com/nopeEOF/translator/blob/main/image/example1.png?raw=true)
 ## build
 > Please make sure Go version >= 1.21.4
 ```bash
