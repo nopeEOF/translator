@@ -26,6 +26,10 @@ func CmdStart(flag string, args ...string) (int, error) {
 		return pid, err
 	}
 	pid = cmd.Process.Pid
+	err = SavePidInFile(pid)
+	if err != nil {
+		return pid, err
+	}
 	return pid, nil
 }
 

@@ -37,24 +37,19 @@ func main() {
 	selectedClipboard = strings.Replace(selectedClipboard, "\n", " ", -1)
 
 	if err != nil {
-		command.Runner("kdialog", "--msgbox", err.Error())
+		command.CmdStart("kdialog", "--msgbox", err.Error())
 		return
 	}
 	body, err := translate.Translate(selectedClipboard, config, client)
 	if err != nil {
-		command.Runner("kdialog", "--msgbox", "check internet connection")
+		command.CmdStart("kdialog", "--msgbox", "check internet connection")
 		return
 	}
 	body, err = client.GetTranslateTextWithSplitBody(body)
 	if err != nil {
-		command.Runner("kdialog", "--msgbox", err.Error())
+		command.CmdStart("kdialog", "--msgbox", err.Error())
 		return
 	}
 	body = client.KdialogMessageBody(body, config)
-	pid, err := command.CmdStart("kdialog", "--msgbox", body)
-	if err != nil {
-		command.Runner("kdialog", "--msgbox", err.Error())
-		return
-	}
-	command.SavePidInFile(pid)
+	command.CmdStart("kdialog", "--msgbox", body)
 }
