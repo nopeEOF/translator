@@ -60,5 +60,6 @@ func (c *Client) GetTranslateTextWithSplitBody(body string) (string, error) {
 
 func (c *Client) KdialogMessageBody(body string, config config.Config) string {
 	body = html.EscapeString(body)
-	return fmt.Sprintf("<html><font size='4'><body dir='%s'><p align=\"justify\">%s</p></body></font></html>", config.Direction, body)
+	fmt.Println(config.FontSize)
+	return fmt.Sprintf("<html><font size='%d'><body dir='%s'><p align=\"justify\">%s</p></body></font></html>", config.FontSize, config.Direction, body)
 }
